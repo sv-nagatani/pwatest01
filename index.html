@@ -19,10 +19,8 @@ document.addEventListener("DOMContentLoaded", function() {
 		});
 	}
 
-	// 起動時処理
+	// 初回表示処理
 	dispLocation();
-//	var d = new Date();
-//	document.getElementById("datetimes").innerHTML = d.toString();
 
 	// 関数の定期実行(5秒おき)
 	var timerId = setInterval(function() {
@@ -30,10 +28,6 @@ document.addEventListener("DOMContentLoaded", function() {
 		// 位置情報の表示
 		dispLocation();
 		
-//		// 現在日時履歴の表示
-//		var d = new Date();
-//		document.getElementById("datetimes").innerHTML = d.toString() + "<br>" + document.getElementById("datetimes").innerHTML;
-
 	}, 5000);
 }, false);
 
@@ -65,15 +59,16 @@ function successCallback(position) {
 	if( typeof(gltimestamp) == "number" ) {
 		gltimestamp = new Date(gltimestamp);
 	}
+	const d = new Date();
 	const elem = document.getElementById("locs");
-	elem.innerHTML = gltimestamp.toString() + " " + gllatitude + "-" + gllongitude + "<br>" + elem.innerHTML;
+	elem.innerHTML = d.toLocaleDateString("ja-JP") + " " + d.toLocaleTimeString("ja-JP") + " " + gllatitude + "-" + gllongitude + "<br>" + elem.innerHTML;
 }
 
 // 位置情報取得失敗時の処理
 function errorCallback() {
 	const d = new Date();
 	const elem = document.getElementById("locs");
-	elem.innerHTML = d.toString() + " 位置情報取得失敗<br>" + elem.innerHTML;
+	elem.innerHTML = d.toLocaleDateString("ja-JP") + " " + d.toLocaleTimeString("ja-JP") + " 位置情報取得失敗<br>" + elem.innerHTML;
 }
 </script>
 
