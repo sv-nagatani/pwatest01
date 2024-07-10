@@ -5,7 +5,8 @@
 </head>
 
 <body>
-	<span id='datetimes'></span><br>
+	<span id='loc'>-</span><br><br>
+	<span id='datetimes'></span>
 
 </body>
 
@@ -20,15 +21,54 @@ document.addEventListener("DOMContentLoaded", function() {
 	}
 
 	// 起動時処理
+	dispLocation();
 	var d = new Date();
 	document.getElementById("datetimes").innerHTML = d.toString();
 
-	// 関数の定期実行
+	// 関数の定期実行(5秒おき)
 	var timerId = setInterval(function() {
+
+		// 位置情報の表示
+		dispLocation();
+		
+		// 現在日時履歴の表示
 		var d = new Date();
 		document.getElementById("datetimes").innerHTML = d.toString() + "<br>" + document.getElementById("datetimes").innerHTML;
+
 	}, 5000);
 }, false);
+
+function dispLocation() {
+	document.getElementById("loc").innerHTML = "-";
+	// 位置情報の表示
+	if (navigator.geolocation) {	// Geolocation APIが使用可能
+		navigator.geolocation.getCurrentPosition(successCallback);
+	}
+}
+
+// 位置情報取得完了時の処理
+function successCallback(position) {
+	// 緯度
+	const gllatitude = position.coords.latitude;
+	// 経度
+	const gllongitude = position.coords.longitude;
+	// 緯度・経度の精度
+	const glaccuracy = position.coords.accuracy;
+	// GPS 高度
+	const glaltitude = position.coords.altitude;
+	// GPS 高度の精度
+	const glaltitudeAccuracy = position.coords.altitudeAccuracy;
+	// 移動方向
+	const glheading = position.coords.heading;
+	// 移動速度
+	const glspeed = position.coords.speed;
+	// タイムスタンプ
+	var gltimestamp =  position.timestamp;
+	if( typeof(gltimestamp) == "number" ) {
+		gltimestamp = new Date(gltimestamp);
+	}
+	document.getElementById("loc").innerHTML = gllatitude + "-" + gllongitude;
+}
 </script>
 
 </html>
